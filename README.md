@@ -1,7 +1,5 @@
 # 📊 CatatKas - Aplikasi Pencatatan Keuangan Modern
 
-![CatatKas Logo](https://via.placeholder.com/800x400)
-
 CatatKas adalah aplikasi pencatatan keuangan modern yang dirancang untuk memudahkan pengguna dalam mengelola dan memantau arus kas mereka. Dengan antarmuka yang intuitif dan fitur-fitur canggih, CatatKas menjadi solusi terbaik untuk manajemen keuangan personal maupun bisnis.
 
 [![Made with Laravel](https://img.shields.io/badge/Made%20with-Laravel-FF2D20?style=for-the-badge&logo=laravel)](https://laravel.com)
