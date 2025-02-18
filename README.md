@@ -163,16 +163,12 @@ GET /api/v1/reports/custom
 
 ### Frontend
 - Tailwind CSS untuk styling
-- Alpine.js untuk interaktivitas
-- Chart.js untuk visualisasi data
 - Axios untuk HTTP requests
 - PWA support
 
 ### Backend
 - Laravel 10.x
-- MySQL/PostgreSQL
-- Redis untuk caching
-- JWT Authentication
+- MySQL
 - REST API
 
 ### Development Tools
@@ -195,7 +191,7 @@ GET /api/v1/reports/custom
 
 1. Clone repository
 ```bash
-git clone https://github.com/username/catatkas.git
+git clone https://github.com/rasyagtps/catatkas.git
 cd catatkas
 ```
 
@@ -239,9 +235,7 @@ Kami sangat menghargai kontribusi dari komunitas. Silakan baca [CONTRIBUTING.md]
 
 Jika Anda menemukan masalah atau memiliki pertanyaan, silakan:
 - Buka issue di GitHub
-- Hubungi kami di support@catatkas.com
-- Kunjungi [dokumentasi online](https://docs.catatkas.com)
 
 ---
 
-<p align="center">Made with ❤️ by CatatKas Team</p>
+<p align="center">Made with ❤️ by Rayy</p>
