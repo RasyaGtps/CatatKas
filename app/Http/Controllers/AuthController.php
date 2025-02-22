@@ -29,16 +29,18 @@ class AuthController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        // Redirect ke halaman login dengan pesan sukses
-        return redirect()->route('login')
-            ->with('status', 'Registrasi berhasil! Silakan login.');
+        // Login langsung setelah register
+        Auth::login($user);
+
+        // Redirect ke dashboard
+        return redirect()->route('dashboard');
     }
 
     public function login(Request $request)
@@ -71,25 +73,22 @@ class AuthController extends Controller
     public function apiLogin(Request $request)
     {
         $credentials = $request->validate([
-            'login' => 'required|string',
-            'password' => 'required|string',
+            'email' => ['required', 'email'],
+            'password' => ['required'],
         ]);
 
-        $loginField = filter_var($credentials['login'], FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
 
-        if (!Auth::attempt([$loginField => $credentials['login'], 'password' => $credentials['password']])) {
             return response()->json([
-                'message' => 'Kredensial tidak valid'
-            ], 401);
+                'message' => 'Login berhasil',
+                'redirect' => '/dashboard'
+            ]);
         }
 
-        $user = User::where($loginField, $credentials['login'])->firstOrFail();
-        $token = $user->createToken('auth_token')->plainTextToken;
-
         return response()->json([
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-        ]);
+            'message' => 'Kredensial tidak valid'
+        ], 401);
     }
 
     public function apiRegister(Request $request)
