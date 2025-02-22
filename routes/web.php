@@ -47,4 +47,12 @@ Route::get('/terms-and-conditions', function () {
     return view('components.terms-and-conditions');
 })->name('terms.conditions');
 
+Route::get('/online-features', function () {
+    return view('components.online-features');
+})->name('online.features');
+
+Route::get('/services', function () {
+    return view('components.services');
+})->name('services');
+
 require __DIR__.'/auth.php';

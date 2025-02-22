@@ -15,8 +15,8 @@
                 <div class="hidden sm:flex items-center space-x-8">
                     <a href="/" class="text-gray-600 hover:text-gray-900">Beranda</a>
                     <a href="{{ route('about') }}" class="text-gray-600 hover:text-gray-900">Tentang Kami</a>
-                    <a href="#" class="text-gray-600 hover:text-gray-900">Fitur Online</a>
-                    <a href="#" class="text-gray-600 hover:text-gray-900">Layanan</a>
+                    <a href="{{ route('online.features') }}" class="text-gray-600 hover:text-gray-900">Fitur Online</a>
+                    <a href="{{ route('services') }}" class="text-gray-600 hover:text-gray-900">Layanan</a>
                     
                     @auth
                         <!-- Settings Dropdown -->
@@ -70,8 +70,8 @@
         <div class="pt-2 pb-3 space-y-1">
             <a href="/" class="block px-4 py-2 text-gray-600 hover:bg-gray-50">Beranda</a>
             <a href="{{ route('about') }}" class="block px-4 py-2 text-gray-600 hover:bg-gray-50">Tentang Kami</a>
-            <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-gray-50">Fitur Online</a>
-            <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-gray-50">Layanan</a>
+            <a href="{{ route('online.features') }}" class="block px-4 py-2 text-gray-600 hover:bg-gray-50">Fitur Online</a>
+            <a href="{{ route('services') }}" class="block px-4 py-2 text-gray-600 hover:bg-gray-50">Layanan</a>
         </div>
     </div>
 </nav>
