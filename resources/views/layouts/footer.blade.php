@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="flex justify-between items-center">
             <div class="flex items-center">
-                <i class="fas fa-book text-blue-500 text-3xl"></i>
+                <i class="fas fa-book-open text-blue-500 text-3xl"></i>
                 <span class="ml-2 text-xl font-bold">CatatKas</span>
             </div>
             <div class="flex space-x-8">
@@ -24,8 +24,12 @@
                         <i class="fas fa-gavel mr-2"></i>Legal
                     </h5>
                     <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-600"><i class="fas fa-shield-alt mr-2"></i>Kebijakan Privasi</a></li>
-                        <li><a href="#" class="text-gray-600"><i class="fas fa-file-contract mr-2"></i>Syarat dan Ketentuan</a></li>
+                        <li><a href="{{ route('privacy.policy') }}" class="text-gray-600 hover:text-blue-500">
+                            <i class="fas fa-shield-alt mr-2"></i>Kebijakan Privasi
+                        </a></li>
+                        <li><a href="{{ route('terms.conditions') }}" class="text-gray-600 hover:text-blue-500">
+                            <i class="fas fa-file-contract mr-2"></i>Syarat dan Ketentuan
+                        </a></li>
                     </ul>
                 </div>
                 <div>
@@ -33,8 +37,12 @@
                         <i class="fas fa-share-alt mr-2"></i>Media Sosial
                     </h5>
                     <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-600"><i class="fab fa-facebook mr-2"></i>Facebook</a></li>
-                        <li><a href="#" class="text-gray-600"><i class="fab fa-instagram mr-2"></i>Instagram</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-blue-500">
+                            <i class="fab fa-facebook mr-2"></i>Facebook
+                        </a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-blue-500">
+                            <i class="fab fa-instagram mr-2"></i>Instagram
+                        </a></li>
                     </ul>
                 </div>
             </div>

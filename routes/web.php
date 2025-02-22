@@ -39,4 +39,12 @@ Route::get('/customer-service', function () {
     return view('components.customer-service');
 })->name('customer.service');
 
+Route::get('/privacy-policy', function () {
+    return view('components.privacy-policy');
+})->name('privacy.policy');
+
+Route::get('/terms-and-conditions', function () {
+    return view('components.terms-and-conditions');
+})->name('terms.conditions');
+
 require __DIR__.'/auth.php';
