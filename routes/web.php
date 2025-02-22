@@ -55,4 +55,20 @@ Route::get('/services', function () {
     return view('components.services');
 })->name('services');
 
+Route::get('/training-workshop', function () {
+    return view('components.training-workshop');
+})->name('training.workshop');
+
+Route::get('/business-consultation', function () {
+    return view('components.business-consultation');
+})->name('business.consultation');
+
+Route::get('/financial-planning', function () {
+    return view('components.financial-planning');
+})->name('financial.planning');
+
+Route::get('/tax-consultation', function () {
+    return view('components.tax-consultation');
+})->name('tax.consultation');
+
 require __DIR__.'/auth.php';

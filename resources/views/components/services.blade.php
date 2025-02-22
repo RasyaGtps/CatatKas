@@ -126,7 +126,7 @@
                     Training & Workshop
                 </h3>
                 <p class="text-gray-600 mb-4">Dapatkan pelatihan langsung dari tim ahli kami tentang manajemen keuangan dan perpajakan UMKM.</p>
-                <a href="{{ route('customer.service') }}" class="text-blue-500 hover:text-blue-600">
+                <a href="{{ route('training.workshop') }}" class="text-blue-500 hover:text-blue-600">
                     Pelajari lebih lanjut <i class="fas fa-arrow-right ml-1"></i>
                 </a>
             </div>
@@ -137,7 +137,7 @@
                     Konsultasi Bisnis
                 </h3>
                 <p class="text-gray-600 mb-4">Konsultasikan masalah bisnis Anda dengan konsultan berpengalaman kami.</p>
-                <a href="{{ route('customer.service') }}" class="text-blue-500 hover:text-blue-600">
+                <a href="{{ route('business.consultation') }}" class="text-blue-500 hover:text-blue-600">
                     Pelajari lebih lanjut <i class="fas fa-arrow-right ml-1"></i>
                 </a>
             </div>

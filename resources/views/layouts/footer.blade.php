@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="flex justify-between items-center">
             <div class="flex items-center">
-                <i class="fas fa-book-open text-blue-500 text-3xl"></i>
+                <i class="fas fa-book text-blue-500 text-3xl"></i>
                 <span class="ml-2 text-xl font-bold">CatatKas</span>
             </div>
             <div class="flex space-x-8">
