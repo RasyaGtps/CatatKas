@@ -27,4 +27,16 @@ Route::prefix('api')->group(function () {
     Route::post('/login', [AuthController::class, 'apiLogin'])->name('api.login');
 });
 
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
+Route::get('/articles/tax', function () {
+    return view('articles.tax');
+})->name('articles.tax');
+
+Route::get('/customer-service', function () {
+    return view('components.customer-service');
+})->name('customer.service');
+
 require __DIR__.'/auth.php';
