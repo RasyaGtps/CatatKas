@@ -5,142 +5,179 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Register</title>
+    <title>Register - CatatKas</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
-<body class="bg-[#ecf3f9]">
-    <div class="min-h-screen flex items-center justify-center">
-        <div class="max-w-md w-full space-y-8 p-8 bg-white rounded-3xl shadow-sm">
-            <!-- Profile Icon -->
-            <div class="flex justify-center">
-                <div class="w-16 h-16 bg-[#2d6bb3] rounded-full flex items-center justify-center">
-                    <i class="fas fa-user-plus text-white text-2xl"></i>
+<body class="bg-[#f8fafc]">
+    <!-- Include Navigation -->
+    @include('layouts.navigation')
+
+    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8">
+            <div>
+                <div class="flex justify-center">
+                    <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center">
+                        <i class="fas fa-user-plus text-white text-2xl"></i>
+                    </div>
                 </div>
+                <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                    Daftar Akun Baru
+                </h2>
             </div>
-            <h2 class="text-center text-3xl font-bold text-[#2d6bb3]">
-                Buat Akun Baru
-            </h2>
 
-            <!-- Error Messages -->
-            @if ($errors->any())
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
-            <form method="POST" action="/register" class="mt-8 space-y-4">
+            <form class="mt-8 space-y-6" id="register-form">
                 @csrf
-                <!-- Nama Lengkap Input -->
-                <div class="rounded-2xl border border-gray-200 overflow-hidden relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-4">
-                        <i class="fas fa-user text-[#2d6bb3]"></i>
-                    </span>
-                    <input id="name" name="name" type="text" required value="{{ old('name') }}"
-                        class="w-full pl-12 pr-4 py-4 text-gray-700 focus:outline-none"
-                        placeholder="Nama Lengkap">
+                <div class="rounded-md shadow-sm -space-y-px">
+                    <!-- Full Name -->
+                    <div>
+                        <label for="name" class="sr-only">Nama Lengkap</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-user text-gray-400"></i>
+                            </div>
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                <i class="fas fa-id-card text-gray-400"></i>
+                            </div>
+                            <input id="name" name="name" type="text" required
+                                class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm pl-10 pr-10"
+                                placeholder="Nama Lengkap">
+                        </div>
+                        @error('name')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label for="email" class="sr-only">Email</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-envelope text-gray-400"></i>
+                            </div>
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                <i class="fas fa-at text-gray-400"></i>
+                            </div>
+                            <input id="email" name="email" type="email" required
+                                class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm pl-10 pr-10"
+                                placeholder="Email">
+                        </div>
+                        @error('email')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Password -->
+                    <div>
+                        <label for="password" class="sr-only">Password</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-lock text-gray-400"></i>
+                            </div>
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer toggle-password">
+                                <i class="fas fa-eye text-gray-400"></i>
+                            </div>
+                            <input id="password" name="password" type="password" required
+                                class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm pl-10 pr-10"
+                                placeholder="Password">
+                        </div>
+                        @error('password')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div>
+                        <label for="password_confirmation" class="sr-only">Konfirmasi Password</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-lock text-gray-400"></i>
+                            </div>
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer toggle-password">
+                                <i class="fas fa-eye text-gray-400"></i>
+                            </div>
+                            <input id="password_confirmation" name="password_confirmation" type="password" required
+                                class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm pl-10 pr-10"
+                                placeholder="Konfirmasi Password">
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Username Input -->
-                <div class="rounded-2xl border border-gray-200 overflow-hidden relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-4">
-                        <i class="fas fa-id-card text-[#2d6bb3]"></i>
-                    </span>
-                    <input id="username" name="username" type="text" required value="{{ old('username') }}"
-                        class="w-full pl-12 pr-4 py-4 text-gray-700 focus:outline-none"
-                        placeholder="Username">
-                </div>
-
-                <!-- Email Input -->
-                <div class="rounded-2xl border border-gray-200 overflow-hidden relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-4">
-                        <i class="fas fa-envelope text-[#2d6bb3]"></i>
-                    </span>
-                    <input id="email" name="email" type="email" required value="{{ old('email') }}"
-                        class="w-full pl-12 pr-4 py-4 text-gray-700 focus:outline-none"
-                        placeholder="Email">
-                </div>
-
-                <!-- Password Input -->
-                <div class="rounded-2xl border border-gray-200 overflow-hidden relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-4">
-                        <i class="fas fa-lock text-[#2d6bb3]"></i>
-                    </span>
-                    <input id="password" name="password" type="password" required
-                        class="w-full pl-12 pr-12 py-4 text-gray-700 focus:outline-none"
-                        placeholder="Password">
-                    <button type="button" class="absolute right-4 top-1/2 transform -translate-y-1/2" onclick="togglePassword('password')">
-                        <i class="fas fa-eye-slash text-[#2d6bb3]"></i>
+                <div>
+                    <button type="submit"
+                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                            <i class="fas fa-user-plus"></i>
+                        </span>
+                        Daftar
                     </button>
                 </div>
-
-                <!-- Konfirmasi Password Input -->
-                <div class="rounded-2xl border border-gray-200 overflow-hidden relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-4">
-                        <i class="fas fa-lock text-[#2d6bb3]"></i>
-                    </span>
-                    <input id="password_confirmation" name="password_confirmation" type="password" required
-                        class="w-full pl-12 pr-12 py-4 text-gray-700 focus:outline-none"
-                        placeholder="Konfirmasi Password">
-                    <button type="button" class="absolute right-4 top-1/2 transform -translate-y-1/2" onclick="togglePassword('password_confirmation')">
-                        <i class="fas fa-eye-slash text-[#2d6bb3]"></i>
-                    </button>
-                </div>
-
-                <!-- Register Button -->
-                <button type="submit"
-                    class="w-full py-4 px-4 bg-[#2d6bb3] text-white rounded-2xl font-medium hover:bg-[#245a96] transition-colors duration-200 mt-6 relative">
-                    <span class="absolute left-4 inset-y-0 flex items-center">
-                        <i class="fas fa-user-plus"></i>
-                    </span>
-                    <span class="pl-6">Daftar</span>
-                </button>
             </form>
 
-            <!-- Login Link -->
-            <div class="text-center mt-4">
-                <a href="{{ route('login') }}" class="font-medium text-[#2d6bb3] hover:text-[#245a96] transition-colors duration-200">
-                    <i class="fas fa-sign-in-alt mr-1"></i>
-                    Sudah punya akun? Masuk
-                </a>
+            <div class="text-center">
+                <p class="text-sm text-gray-600">
+                    Sudah punya akun?
+                    <a href="{{ route('login') }}" class="font-medium text-blue-600 hover:text-blue-500">
+                        Masuk sekarang
+                    </a>
+                </p>
             </div>
         </div>
     </div>
 
+    <!-- Include Footer -->
+    @include('layouts.footer')
+
     <script>
-        function togglePassword(inputId) {
-            const passwordInput = document.getElementById(inputId);
-            const eyeIcon = event.currentTarget.querySelector('i');
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('register-form');
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                password_confirmation: document.getElementById('password_confirmation').value,
+            };
 
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                eyeIcon.classList.remove('fa-eye-slash');
-                eyeIcon.classList.add('fa-eye');
-            } else {
-                passwordInput.type = 'password';
-                eyeIcon.classList.remove('fa-eye');
-                eyeIcon.classList.add('fa-eye-slash');
-            }
-        }
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify(formData)
+                });
 
-        // Pastikan CSRF token tersedia untuk semua request AJAX
-        document.addEventListener('DOMContentLoaded', function() {
-            let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            document.querySelectorAll('form').forEach(form => {
-                if (!form.querySelector('input[name="_token"]')) {
-                    let input = document.createElement('input');
-                    input.type = 'hidden';
-                    input.name = '_token';
-                    input.value = token;
-                    form.appendChild(input);
+                const data = await response.json();
+
+                if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    window.location.href = '/dashboard';
+                } else {
+                    throw new Error(data.message || 'Registrasi gagal');
                 }
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+
+        const togglePassword = document.querySelectorAll('.toggle-password');
+        
+        togglePassword.forEach(button => {
+            button.addEventListener('click', function() {
+                const input = this.parentElement.parentElement.querySelector('input');
+                const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                input.setAttribute('type', type);
+                this.classList.toggle('fa-eye');
+                this.classList.toggle('fa-eye-slash');
             });
         });
+    });
     </script>
 </body>
 
