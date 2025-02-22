@@ -60,7 +60,7 @@
         <div class="text-center">
             <h2 class="text-3xl font-bold mb-8">Tim Kami</h2>
             <p class="text-gray-600 max-w-2xl mx-auto mb-8">Didukung oleh tim profesional yang berpengalaman dalam teknologi, keuangan, dan perpajakan.</p>
-            <a href="#" class="bg-blue-500 text-white px-6 py-3 rounded-lg inline-flex items-center">
+            <a href="{{ route('customer.service') }}" class="bg-blue-500 text-white px-6 py-3 rounded-lg inline-flex items-center hover:bg-blue-600">
                 <i class="fas fa-envelope mr-2"></i>Hubungi Kami
             </a>
         </div>

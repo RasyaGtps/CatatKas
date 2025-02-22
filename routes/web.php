@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 // Web Routes
 Route::get('/', function () {
@@ -70,5 +71,11 @@ Route::get('/financial-planning', function () {
 Route::get('/tax-consultation', function () {
     return view('components.tax-consultation');
 })->name('tax.consultation');
+
+Route::middleware('guest')->group(function () {
+    Route::get('login', [AuthenticatedSessionController::class, 'create'])
+        ->name('login');
+    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+});
 
 require __DIR__.'/auth.php';
