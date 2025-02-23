@@ -9,13 +9,15 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-// Public API Routes - No auth required
-Route::middleware(['api'])->group(function () {
-    Route::post('register', [AuthController::class, 'register'])->name('api.register');
-    Route::post('login', [AuthController::class, 'login'])->name('api.login');
+// Public API Routes
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+Route::post('logout', [AuthController::class, 'logout']);
 
-    // Protected API Routes - Requires auth
-    Route::middleware('auth:sanctum')->group(function () {
-        Route::post('logout', [AuthController::class, 'logout'])->name('api.logout');
+// Protected API Routes
+Route::middleware('auth:sanctum')->group(function () {
+    // User Profile
+    Route::get('user', function () {
+        return auth()->user();
     });
 });

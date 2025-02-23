@@ -7,6 +7,7 @@
     <title>Login - CatatKas</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body class="bg-[#f8fafc]">
@@ -25,14 +26,9 @@
                 </h2>
             </div>
 
-            @if (session('status'))
-                <div class="mb-4 font-medium text-sm text-green-600">
-                    {{ session('status') }}
-                </div>
-            @endif
+            <div id="error-message" class="hidden mb-4 p-4 text-sm text-red-700 bg-red-100 rounded-lg"></div>
 
             <form class="mt-8 space-y-6" id="login-form">
-                @csrf
                 <!-- Input fields dengan icon -->
                 <div class="space-y-4">
                     <!-- Email -->
@@ -42,8 +38,8 @@
                         </div>
                         <input type="email" id="email" name="email" required
                             class="block w-full pl-12 pr-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Email"
-                            value="{{ old('email') }}">
+                            placeholder="Email">
+                        <p class="mt-1 text-sm text-red-500 email-error"></p>
                     </div>
 
                     <!-- Password -->
@@ -57,6 +53,7 @@
                         <div class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer toggle-password">
                             <i class="fas fa-eye text-gray-400 text-lg"></i>
                         </div>
+                        <p class="mt-1 text-sm text-red-500 password-error"></p>
                     </div>
                 </div>
 
@@ -99,57 +96,97 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Form submission handler
-        const form = document.querySelector('form');
+        // Toggle password visibility
+        document.querySelector('.toggle-password').addEventListener('click', function() {
+            const input = this.parentElement.querySelector('input');
+            const icon = this.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+
+        // Handle form submission
+        const form = document.getElementById('login-form');
+        const errorMessage = document.getElementById('error-message');
+
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            // Clear previous errors
+            document.querySelectorAll('.text-red-500').forEach(error => error.textContent = '');
+            errorMessage.classList.add('hidden');
             
             const formData = {
                 email: document.getElementById('email').value,
                 password: document.getElementById('password').value,
+                remember: document.getElementById('remember_me').checked
             };
 
             try {
+                // Get CSRF token
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+                // First get the sanctum CSRF cookie
+                await fetch('/sanctum/csrf-cookie', {
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    credentials: 'include'
+                });
+
+                // Then attempt login
                 const response = await fetch('/api/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN': csrfToken
                     },
+                    credentials: 'include',
                     body: JSON.stringify(formData)
                 });
 
                 const data = await response.json();
+                console.log('Login response:', data);
 
                 if (response.ok) {
-                    localStorage.setItem('token', data.token);
+                    // Store the token
+                    if (data.data && data.data.access_token) {
+                        localStorage.setItem('token', data.data.access_token);
+                    }
+                    
+                    // Redirect to dashboard
                     window.location.href = '/dashboard';
                 } else {
-                    throw new Error(data.message || 'Login gagal');
+                    // Show error message
+                    if (data.message) {
+                        errorMessage.textContent = data.message;
+                        errorMessage.classList.remove('hidden');
+                    }
+                    
+                    // Handle validation errors
+                    if (data.errors) {
+                        Object.keys(data.errors).forEach(key => {
+                            const errorElement = document.querySelector(`.${key}-error`);
+                            if (errorElement) {
+                                errorElement.textContent = data.errors[key][0];
+                            }
+                        });
+                    }
                 }
             } catch (error) {
-                alert(error.message);
-            }
-        });
-
-        // Password visibility toggle
-        const togglePassword = document.querySelector('.toggle-password');
-        const passwordInput = document.getElementById('password');
-        
-        togglePassword.addEventListener('click', function() {
-            // Toggle tipe input antara password dan text
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            
-            // Toggle icon antara eye dan eye-slash
-            const icon = this.querySelector('i');
-            if (type === 'text') {
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
+                console.error('Login error:', error);
+                errorMessage.textContent = error.message || 'An error occurred during login. Please try again.';
+                errorMessage.classList.remove('hidden');
             }
         });
     });

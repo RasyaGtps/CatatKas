@@ -110,13 +110,14 @@ class AuthController extends Controller
     }
 
     /**
-     * Logout user (Revoke the token).
+     * Logout the authenticated user.
      */
     public function logout(Request $request)
     {
         try {
-            $request->user()->currentAccessToken()->delete();
-            
+            // Revoke all tokens...
+            $request->user()->tokens()->delete();
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Successfully logged out'
@@ -124,8 +125,7 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'An error occurred',
-                'error' => $e->getMessage()
+                'message' => 'Logout failed'
             ], 500);
         }
     }

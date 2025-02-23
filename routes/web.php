@@ -12,26 +12,33 @@ Route::get('/', function () {
 });
 
 // Guest Routes
-Route::middleware(['web'])->group(function () {
-    Route::middleware(['guest'])->group(function () {
-        Route::get('/login', [AuthenticatedSessionController::class, 'create'])
-            ->name('login');
-        Route::post('/login', [AuthenticatedSessionController::class, 'store']);
-        
-        // Use our custom AuthController for registration
-        Route::get('/register', [AuthController::class, 'showRegisterForm'])
-            ->name('register');
-        Route::post('/register', [AuthController::class, 'register']);
-    });
+Route::middleware('guest')->group(function () {
+    Route::get('/login', function () {
+        return view('auth.login');
+    })->name('login');
+    
+    Route::get('/register', function () {
+        return view('auth.register');
+    })->name('register');
 });
 
-// Auth Routes
-Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+// Protected Routes
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard', [
+            'user' => auth()->user()
+        ]);
+    })->name('dashboard');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+// Logout Route
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+    ->middleware('auth:sanctum')
+    ->name('logout');
 
 // Static Pages Routes
 Route::get('/about', function () {
