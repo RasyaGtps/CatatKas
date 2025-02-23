@@ -1,16 +1,19 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\AuthController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
 
-// API Routes tanpa prefix 'api'
-Route::post('login', [AuthController::class, 'apiLogin']);
-Route::post('register', [AuthController::class, 'apiRegister']);
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+*/
 
+// Public API Routes - No auth required
+Route::post('register', [AuthController::class, 'register'])->name('api.register');
+Route::post('login', [AuthController::class, 'login'])->name('api.login');
+
+// Protected API Routes - Requires auth
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('logout', [AuthController::class, 'apiLogout']);
-    Route::get('user', function (Request $request) {
-        return $request->user();
-    });
-}); 
+    Route::post('logout', [AuthController::class, 'logout'])->name('api.logout');
+});

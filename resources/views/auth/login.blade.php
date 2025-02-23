@@ -15,8 +15,12 @@
 
     <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-md w-full space-y-8">
-            <div>
-                <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            <!-- Logo dan Judul -->
+            <div class="text-center mb-10">
+                <div class="mx-auto w-24 h-24 bg-blue-500 rounded-full flex items-center justify-center mb-6">
+                    <i class="fas fa-user text-white text-4xl"></i>
+                </div>
+                <h2 class="text-3xl font-extrabold text-gray-900">
                     Masuk ke Akun Anda
                 </h2>
             </div>
@@ -29,75 +33,57 @@
 
             <form class="mt-8 space-y-6" id="login-form">
                 @csrf
-
-                <div class="rounded-md shadow-sm -space-y-px">
-                    <div>
-                        <label for="email" class="sr-only">Email</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i class="fas fa-envelope text-gray-400"></i>
-                            </div>
-                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                <i class="fas fa-at text-gray-400"></i>
-                            </div>
-                            <input id="email" name="email" type="email" required 
-                                class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm pl-10 pr-10"
-                                placeholder="Email"
-                                value="{{ old('email') }}">
+                <!-- Input fields dengan icon -->
+                <div class="space-y-4">
+                    <!-- Email -->
+                    <div class="relative rounded-md shadow-sm">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-envelope text-gray-400 text-lg w-6 text-center"></i>
                         </div>
-                        @error('email')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                        <input type="email" id="email" name="email" required
+                            class="block w-full pl-12 pr-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Email"
+                            value="{{ old('email') }}">
                     </div>
-                    <div>
-                        <label for="password" class="sr-only">Password</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i class="fas fa-lock text-gray-400"></i>
-                            </div>
-                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer toggle-password">
-                                <i class="fas fa-eye text-gray-400"></i>
-                            </div>
-                            <input id="password" name="password" type="password" required
-                                class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm pl-10 pr-10"
-                                placeholder="Password">
+
+                    <!-- Password -->
+                    <div class="relative rounded-md shadow-sm">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-gray-400 text-lg w-6 text-center"></i>
                         </div>
-                        @error('password')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                        <input type="password" id="password" name="password" required
+                            class="block w-full pl-12 pr-12 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Password">
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer toggle-password">
+                            <i class="fas fa-eye text-gray-400 text-lg"></i>
+                        </div>
                     </div>
                 </div>
 
-                <div class="flex items-center justify-between">
+                <!-- Remember Me dan Lupa Password -->
+                <div class="flex items-center justify-between mt-6">
                     <div class="flex items-center">
-                        <input id="remember_me" name="remember" type="checkbox"
+                        <input type="checkbox" id="remember_me" name="remember"
                             class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
                         <label for="remember_me" class="ml-2 block text-sm text-gray-900">
                             Ingat saya
                         </label>
                     </div>
-
-                    @if (Route::has('password.request'))
-                        <div class="text-sm">
-                            <a href="{{ route('password.request') }}" class="font-medium text-blue-600 hover:text-blue-500">
-                                Lupa password?
-                            </a>
-                        </div>
-                    @endif
+                    <a href="{{ route('password.request') }}" class="text-sm font-medium text-blue-600 hover:text-blue-500">
+                        Lupa password?
+                    </a>
                 </div>
 
-                <div>
-                    <button type="submit"
-                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                        <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-                            <i class="fas fa-sign-in-alt"></i>
-                        </span>
-                        Masuk
-                    </button>
-                </div>
+                <!-- Tombol Login -->
+                <button type="submit"
+                    class="w-full flex items-center justify-center px-4 py-3 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mt-6">
+                    <i class="fas fa-sign-in-alt mr-2"></i>
+                    Masuk
+                </button>
             </form>
 
-            <div class="text-center">
+            <!-- Link ke Register -->
+            <div class="text-center mt-8">
                 <p class="text-sm text-gray-600">
                     Belum punya akun?
                     <a href="{{ route('register') }}" class="font-medium text-blue-600 hover:text-blue-500">
@@ -113,6 +99,7 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Form submission handler
         const form = document.querySelector('form');
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -143,6 +130,26 @@
                 }
             } catch (error) {
                 alert(error.message);
+            }
+        });
+
+        // Password visibility toggle
+        const togglePassword = document.querySelector('.toggle-password');
+        const passwordInput = document.getElementById('password');
+        
+        togglePassword.addEventListener('click', function() {
+            // Toggle tipe input antara password dan text
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            // Toggle icon antara eye dan eye-slash
+            const icon = this.querySelector('i');
+            if (type === 'text') {
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
             }
         });
     });

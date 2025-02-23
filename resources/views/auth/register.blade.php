@@ -16,106 +16,93 @@
 
     <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-md w-full space-y-8">
-            <div>
-                <div class="flex justify-center">
-                    <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center">
-                        <i class="fas fa-user-plus text-white text-2xl"></i>
-                    </div>
+            <!-- Logo dan Judul -->
+            <div class="text-center mb-10">
+                <div class="mx-auto w-24 h-24 bg-blue-500 rounded-full flex items-center justify-center mb-6">
+                    <i class="fas fa-user-plus text-white text-4xl"></i>
                 </div>
-                <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                <h2 class="text-3xl font-extrabold text-gray-900">
                     Daftar Akun Baru
                 </h2>
             </div>
 
-            <form class="mt-8 space-y-6" id="register-form">
+            <form action="{{ route('register') }}" method="POST">
                 @csrf
-                <div class="rounded-md shadow-sm -space-y-px">
-                    <!-- Full Name -->
-                    <div>
-                        <label for="name" class="sr-only">Nama Lengkap</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i class="fas fa-user text-gray-400"></i>
-                            </div>
-                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                <i class="fas fa-id-card text-gray-400"></i>
-                            </div>
-                            <input id="name" name="name" type="text" required
-                                class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm pl-10 pr-10"
-                                placeholder="Nama Lengkap">
+                <div class="space-y-4">
+                    <!-- Nama -->
+                    <div class="relative rounded-md shadow-sm">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-user text-gray-400 text-lg w-6 text-center"></i>
                         </div>
+                        <input type="text" 
+                               name="name" 
+                               value="{{ old('name') }}" 
+                               required 
+                               class="block w-full pl-12 pr-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="Nama Lengkap">
                         @error('name')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <!-- Email -->
-                    <div>
-                        <label for="email" class="sr-only">Email</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i class="fas fa-envelope text-gray-400"></i>
-                            </div>
-                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                <i class="fas fa-at text-gray-400"></i>
-                            </div>
-                            <input id="email" name="email" type="email" required
-                                class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm pl-10 pr-10"
-                                placeholder="Email">
+                    <div class="relative rounded-md shadow-sm">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-envelope text-gray-400 text-lg w-6 text-center"></i>
                         </div>
+                        <input type="email" 
+                               name="email" 
+                               value="{{ old('email') }}" 
+                               required 
+                               class="block w-full pl-12 pr-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="Email">
                         @error('email')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <!-- Password -->
-                    <div>
-                        <label for="password" class="sr-only">Password</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i class="fas fa-lock text-gray-400"></i>
-                            </div>
-                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer toggle-password">
-                                <i class="fas fa-eye text-gray-400"></i>
-                            </div>
-                            <input id="password" name="password" type="password" required
-                                class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm pl-10 pr-10"
-                                placeholder="Password">
+                    <div class="relative rounded-md shadow-sm">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-gray-400 text-lg w-6 text-center"></i>
+                        </div>
+                        <input type="password" 
+                               name="password" 
+                               required 
+                               class="block w-full pl-12 pr-12 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="Password">
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer toggle-password">
+                            <i class="fas fa-eye text-gray-400 text-lg"></i>
                         </div>
                         @error('password')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <!-- Confirm Password -->
-                    <div>
-                        <label for="password_confirmation" class="sr-only">Konfirmasi Password</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i class="fas fa-lock text-gray-400"></i>
-                            </div>
-                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer toggle-password">
-                                <i class="fas fa-eye text-gray-400"></i>
-                            </div>
-                            <input id="password_confirmation" name="password_confirmation" type="password" required
-                                class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm pl-10 pr-10"
-                                placeholder="Konfirmasi Password">
+                    <!-- Konfirmasi Password -->
+                    <div class="relative rounded-md shadow-sm">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-gray-400 text-lg w-6 text-center"></i>
+                        </div>
+                        <input type="password" 
+                               name="password_confirmation" 
+                               required 
+                               class="block w-full pl-12 pr-12 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="Konfirmasi Password">
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer toggle-password">
+                            <i class="fas fa-eye text-gray-400 text-lg"></i>
                         </div>
                     </div>
-                </div>
 
-                <div>
-                    <button type="submit"
-                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                        <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-                            <i class="fas fa-user-plus"></i>
-                        </span>
+                    <button type="submit" 
+                            class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                         Daftar
                     </button>
                 </div>
             </form>
 
-            <div class="text-center">
+            <!-- Link ke Login -->
+            <div class="text-center mt-8">
                 <p class="text-sm text-gray-600">
                     Sudah punya akun?
                     <a href="{{ route('login') }}" class="font-medium text-blue-600 hover:text-blue-500">
@@ -130,52 +117,21 @@
     @include('layouts.footer')
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('register-form');
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
+    // Toggle password visibility
+    document.querySelectorAll('.toggle-password').forEach(button => {
+        button.addEventListener('click', function() {
+            const input = this.parentElement.querySelector('input');
+            const icon = this.querySelector('i');
             
-            const formData = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                password: document.getElementById('password').value,
-                password_confirmation: document.getElementById('password_confirmation').value,
-            };
-
-            try {
-                const response = await fetch('/api/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    body: JSON.stringify(formData)
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    localStorage.setItem('token', data.token);
-                    window.location.href = '/dashboard';
-                } else {
-                    throw new Error(data.message || 'Registrasi gagal');
-                }
-            } catch (error) {
-                alert(error.message);
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
             }
-        });
-
-        const togglePassword = document.querySelectorAll('.toggle-password');
-        
-        togglePassword.forEach(button => {
-            button.addEventListener('click', function() {
-                const input = this.parentElement.parentElement.querySelector('input');
-                const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
-                input.setAttribute('type', type);
-                this.classList.toggle('fa-eye');
-                this.classList.toggle('fa-eye-slash');
-            });
         });
     });
     </script>

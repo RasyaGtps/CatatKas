@@ -16,62 +16,65 @@ class AuthController extends Controller
         return view('welcome');
     }
 
-    public function showRegister()
+    public function showRegisterForm()
     {
         return view('auth.register');
     }
 
     public function register(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'username' => 'required|string|unique:users|max:255',
-            'email' => 'required|string|email|unique:users|max:255',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+        try {
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|min:8|confirmed',
+            ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+            $user = User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => Hash::make($validated['password']),
+            ]);
 
-        // Login langsung setelah register
-        Auth::login($user);
+            // Check if request wants JSON response
+            if ($request->wantsJson() || $request->is('api/*')) {
+                $token = $user->createToken('auth_token')->plainTextToken;
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Registrasi berhasil',
+                    'data' => [
+                        'user' => $user,
+                        'token' => $token
+                    ]
+                ], 201);
+            }
 
-        // Redirect ke dashboard
-        return redirect()->route('dashboard');
+            // For web requests
+            auth()->login($user);
+            return redirect('/dashboard')->with('success', 'Registrasi berhasil!');
+
+        } catch (ValidationException $e) {
+            if ($request->wantsJson() || $request->is('api/*')) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Validasi gagal',
+                    'errors' => $e->errors()
+                ], 422);
+            }
+            throw $e;
+        } catch (\Exception $e) {
+            if ($request->wantsJson() || $request->is('api/*')) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Terjadi kesalahan',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+            throw $e;
+        }
     }
 
     public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'login' => 'required|string',
-            'password' => 'required|string',
-        ]);
-
-        $loginField = filter_var($credentials['login'], FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-
-        if (Auth::attempt([$loginField => $credentials['login'], 'password' => $credentials['password']])) {
-            $request->session()->regenerate();
-            return redirect()->intended('dashboard');
-        }
-
-        return back()->withErrors([
-            'login' => 'Kredensial yang diberikan tidak cocok dengan data kami.',
-        ]);
-    }
-
-    public function logout(Request $request)
-    {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect('/');
-    }
-
-    public function apiLogin(Request $request)
     {
         $request->validate([
             'email' => 'required|email',
@@ -82,15 +85,49 @@ class AuthController extends Controller
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
-                'email' => ['Kredensial yang diberikan salah.'],
+                'email' => ['Kredensial yang diberikan tidak sesuai.'],
             ]);
         }
 
-        $token = $user->createToken('auth-token')->plainTextToken;
+        $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            'token' => $token,
-            'user' => $user
+            'status' => 'success',
+            'user' => $user,
+            'access_token' => $token,
+            'token_type' => 'Bearer'
+        ], 200);
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Berhasil logout'
+        ]);
+    }
+
+    public function apiLogin(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (Auth::attempt($request->only('email', 'password'))) {
+            $user = Auth::user();
+            $token = $user->createToken('auth-token')->plainTextToken;
+
+            return response()->json([
+                'token' => $token,
+                'user' => $user
+            ]);
+        }
+
+        throw ValidationException::withMessages([
+            'email' => ['Kredensial yang diberikan tidak cocok dengan data kami.'],
         ]);
     }
 
@@ -108,9 +145,11 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        $token = $user->createToken('auth-token')->plainTextToken;
+        $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
+            'status' => 'success',
+            'message' => 'User registered successfully',
             'token' => $token,
             'user' => $user
         ], 201);
@@ -119,6 +158,6 @@ class AuthController extends Controller
     public function apiLogout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
-        return response()->json(['message' => 'Logged out successfully']);
+        return response()->json(['message' => 'Berhasil logout']);
     }
 }

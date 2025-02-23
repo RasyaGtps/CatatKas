@@ -10,12 +10,22 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Guest Routes
 Route::middleware(['web'])->group(function () {
-    Route::get('/', [AuthController::class, 'showLogin'])->name('login');
-    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-    Route::post('/register', [AuthController::class, 'register']);
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::middleware(['guest'])->group(function () {
+        Route::get('/login', [AuthenticatedSessionController::class, 'create'])
+            ->name('login');
+        Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+        
+        // Use our custom AuthController for registration
+        Route::get('/register', [AuthController::class, 'showRegisterForm'])
+            ->name('register');
+        Route::post('/register', [AuthController::class, 'register']);
+    });
 });
+
+// Auth Routes
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -23,11 +33,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// API Routes untuk Login
-Route::prefix('api')->group(function () {
-    Route::post('/login', [AuthController::class, 'apiLogin'])->name('api.login');
-});
-
+// Static Pages Routes
 Route::get('/about', function () {
     return view('about');
 })->name('about');
@@ -71,11 +77,5 @@ Route::get('/financial-planning', function () {
 Route::get('/tax-consultation', function () {
     return view('components.tax-consultation');
 })->name('tax.consultation');
-
-Route::middleware('guest')->group(function () {
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])
-        ->name('login');
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
-});
 
 require __DIR__.'/auth.php';
